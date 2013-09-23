@@ -70,20 +70,23 @@ int main(int argc, char **argv)
 	 */
 	FrontEnd *fe = new FrontEnd(RtlSdrTuner::factory);
 	fe->tuner()->setSubdevice(tunerid);
-	fe->tuner()->setCentreFrequency(124325000);
-	fe->tuner()->setSampleRate(2400000);
-	fe->tuner()->setBlockSize(204800);
+	//fe->tuner()->setCentreFrequency(124325000);
+	fe->tuner()->setCentreFrequency(82500000);
+	//fe->tuner()->setSampleRate(2400000);
+	fe->tuner()->setSampleRate(1200000);
+	//fe->tuner()->setBlockSize(204800);
+	fe->tuner()->setBlockSize(819200);
 	//fe->tuner()->setGainDB(50);
 	fe->tuner()->setAGC(true);
 	fe->tuner()->setOffsetPPM(25);
 
+#if 1
 	Receiver *rx = new Receiver();
 	rx->setFrontEnd(fe);
 	rx->downconverter()->setIF(0);
 	rx->demodulator()->setMode(Demodulator::AM);
-
-#if 0
-	rx = new Receiver();
+#else
+	Receiver *rx = new Receiver();
 	rx->setFrontEnd(fe);
 	rx->downconverter()->setIF(100000);
 	rx->demodulator()->setMode(Demodulator::FM);
@@ -102,6 +105,7 @@ int main(int argc, char **argv)
 	h->registerHandler("tuners/*/receivers", RedirectHandler::factory, new string("/receivers?tuner_id=$1"));
 	h->registerHandler("receivers", ReceiverHandler::factory);
 	h->registerHandler("receivers/*", ReceiverHandler::factory);
+	h->registerHandler("receivers/*/audio.wav", RedirectHandler::factory, new string("/audio/$1.wav"));
 	h->registerHandler("receivers/*/audio.mp3", RedirectHandler::factory, new string("/audio/$1.mp3"));
 	h->registerHandler("receivers/*/audio.ogg", RedirectHandler::factory, new string("/audio/$1.ogg"));
 	h->start();

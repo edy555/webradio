@@ -67,6 +67,18 @@ private:
 	lame_t			state;
 };
 
+class WavEncoder : public AudioEncoder
+{
+public:
+	WavEncoder(unsigned int samplerate, unsigned int channels);
+	~WavEncoder();
+
+	const vector<char> encode(const vector<float> &samples);
+
+ private:
+	bool is_first;
+};
+
 #ifdef WITH_VORBIS
 class VorbisEncoder : public AudioEncoder
 {

@@ -30,7 +30,8 @@
 #include "debug.h"
 #include "rtlsdrtuner.h"
 
-#define N_BUFFERS_LOG2		2
+//#define N_BUFFERS_LOG2		2
+#define N_BUFFERS_LOG2		4
 #define N_BUFFERS			(1 << (N_BUFFERS_LOG2))
 
 RtlSdrTuner::RtlSdrTuner(const string &name) :
@@ -93,7 +94,7 @@ void RtlSdrTuner::dataReady(unsigned char *buf, unsigned int len)
 
 		/* If tail is full then we have a buffer overflow */
 		vector<sample_t> *buffer = &ringBuffer[tail];
-#if 0
+#if 1
 		LOG_DEBUG("len = %u tail %u (%u avail)\n", len, tail, blockSize() - (unsigned int)buffer->size());
 #endif
 		if (buffer->size() == blockSize()) {

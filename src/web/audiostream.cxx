@@ -50,7 +50,8 @@ AudioStreamManager::~AudioStreamManager()
 
 bool AudioStreamManager::init()
 {
-	encoder = new MP3Encoder(inputSampleRate(), inputChannels());
+  //encoder = new MP3Encoder(inputSampleRate(), inputChannels());
+	encoder = new WavEncoder(inputSampleRate(), inputChannels());
 	streams[subdevice()] = this;
 	return true;
 }
@@ -150,7 +151,7 @@ unsigned short AudioStreamHandler::doGet(const vector<string> &wildcards, const 
 	}
 	mountpoint = wildcards[0].substr(0, pos);
 	fmt = wildcards[0].substr(pos);
-	if (fmt != ".mp3") {
+	if (fmt != ".mp3" && fmt != ".wav") {
 		LOG_ERROR("Unsupported format %s\n", fmt.c_str());
 		return MHD_HTTP_NOT_FOUND;
 	}
@@ -169,7 +170,8 @@ unsigned short AudioStreamHandler::doGet(const vector<string> &wildcards, const 
 	fcntl(pipefd[1], F_SETFL, O_NONBLOCK);
 
 	streams.at(mountpoint)->registerConsumer(this);
-	_contentType = "audio/mpeg";
+	//_contentType = "audio/mpeg";
+	_contentType = "audio/wav";
 	_isPersistent = true;
 	return MHD_HTTP_OK;
 }

@@ -22,6 +22,7 @@ webradio_SOURCES = main.cxx \
 	web/redirecthandler.cxx \
 	web/httpserver.cxx \
 	web/mp3encoder.cxx \
+	web/wavencoder.cxx \
 	io/randsource.cxx \
 	io/pulseaudio.cxx \
 	io/rtlsdrtuner.cxx \
